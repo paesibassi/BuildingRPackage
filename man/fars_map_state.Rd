@@ -36,13 +36,13 @@ The data files must be in the current working directory (see also
 }
 \section{Warning}{
 
-  \code{\link{maps}} package should be attached (\code{library(maps)}),
+  \pkg{maps} package should be attached (\code{library(maps)}),
   or the function will throw an error because maps does not export the data
   (\code{object 'stateMapEnv'}) for the \code{\link{map}} function.
 }
 
 \examples{
-fars_map_state(1, 2013)
-fars_map_state(48, 2015)
+\donttest{fars_map_state(1, 2013)}
+\donttest{fars_map_state(48, 2015)}
 
 }

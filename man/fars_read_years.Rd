@@ -27,14 +27,14 @@ The data files must be in the current working directory (see also
 }
 \section{Warning}{
 
-  \code{\link{dplyr}} package should be attached (\code{library(dplyr)}),
+  \pkg{dplyr} package should be attached (\code{library(dplyr)}),
   or the function will throw an error because it cannot find the pipe
   operator.
 }
 
 \examples{
-year_list <- fars_read_years(2013)
-year_list <- fars_read_years(c(2013, 2014, 2015))
+\donttest{year_list <- fars_read_years(2013)}
+\donttest{year_list <- fars_read_years(c(2013, 2014, 2015))}
 
 }
 \seealso{

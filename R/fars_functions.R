@@ -11,7 +11,7 @@
 #' Reads a csv file and import the data, returning a tibble.
 #'
 #' @details The data type in the columns is guessed automatically by the
-#'   \code{\link[readr]{read_csv}} function in the \code{\link{readr}} package.
+#'   \code{\link[readr]{read_csv}} function in the \pkg{readr} package.
 #'   Additional messages and progress are supressed to limit the console
 #'   output.
 #'
@@ -24,8 +24,8 @@
 #'   (see \code{\link{tibble}}).
 #'
 #' @examples
-#' data2013 <- fars_read('fars_data/accident_2013.csv.bz2')
-#' data2014 <- fars_read('fars_data/accident_2014.csv.bz2')
+#' \donttest{data2013 <- fars_read('fars_data/accident_2013.csv.bz2')}
+#' \donttest{data2014 <- fars_read('fars_data/accident_2014.csv.bz2')}
 #'
 #' @import readr
 #' @import dplyr
@@ -79,7 +79,7 @@ make_filename <- function(year) {
 #'   \code{\link{getwd}}) to be found.
 #'
 #' @section Warning:
-#'   \code{\link{dplyr}} package should be attached (\code{library(dplyr)}),
+#'   \pkg{dplyr} package should be attached (\code{library(dplyr)}),
 #'   or the function will throw an error because it cannot find the pipe
 #'   operator.
 #'
@@ -90,8 +90,8 @@ make_filename <- function(year) {
 #' @seealso (\code{\link{make_filename}})
 #'
 #' @examples
-#' year_list <- fars_read_years(2013)
-#' year_list <- fars_read_years(c(2013, 2014, 2015))
+#' \donttest{year_list <- fars_read_years(2013)}
+#' \donttest{year_list <- fars_read_years(c(2013, 2014, 2015))}
 #'
 #' @import dplyr
 #'
@@ -101,8 +101,9 @@ fars_read_years <- function(years) {
     file <- make_filename(year)
     tryCatch({
       dat <- fars_read(file)
-      dplyr::mutate(dat, year = year) %>%
-        dplyr::select(MONTH, year)
+      # changed to standard evaluation to pass R CMD Check
+      dplyr::mutate_(dat, "year" = year) %>%
+        dplyr::select_("MONTH", "year")
     }, error = function(e) {
       warning("invalid year: ", year)
       return(NULL)
@@ -131,8 +132,8 @@ fars_read_years <- function(years) {
 #' @seealso (\code{\link{fars_read_years}})
 #'
 #' @examples
-#' aggregated <- fars_summarize_years(2013)
-#' aggregated <- fars_summarize_years(c(2013, 2014, 2015))
+#' \donttest{aggregated <- fars_summarize_years(2013)}
+#' \donttest{aggregated <- fars_summarize_years(c(2013, 2014, 2015))}
 #'
 #' @import dplyr
 #' @import tidyr
@@ -140,10 +141,11 @@ fars_read_years <- function(years) {
 #' @export
 fars_summarize_years <- function(years) {
   dat_list <- fars_read_years(years)
+  # changed to standard evaluation to pass R CMD Check
   dplyr::bind_rows(dat_list) %>%
-    dplyr::group_by(year, MONTH) %>%
-    dplyr::summarize(n = n()) %>%
-    tidyr::spread(year, n)
+    dplyr::group_by_("year", "MONTH") %>%
+    dplyr::summarize_("n" = ~n()) %>%
+    tidyr::spread_("year", "n")
 }
 
 #' Draws observations as point on a map
@@ -166,7 +168,7 @@ fars_summarize_years <- function(years) {
 #'   \code{\link{getwd}}) to be found.
 #'
 #' @section Warning:
-#'   \code{\link{maps}} package should be attached (\code{library(maps)}),
+#'   \pkg{maps} package should be attached (\code{library(maps)}),
 #'   or the function will throw an error because maps does not export the data
 #'   (\code{object 'stateMapEnv'}) for the \code{\link{map}} function.
 #'
@@ -178,8 +180,8 @@ fars_summarize_years <- function(years) {
 #'   (accidents) plotted as points on the map.
 #'
 #' @examples
-#' fars_map_state(1, 2013)
-#' fars_map_state(48, 2015)
+#' \donttest{fars_map_state(1, 2013)}
+#' \donttest{fars_map_state(48, 2015)}
 #'
 #' @import dplyr
 #' @import maps
@@ -190,6 +192,8 @@ fars_map_state <- function(state.num, year) {
   filename <- make_filename(year)
   data <- fars_read(filename)
   state.num <- as.integer(state.num)
+
+  STATE <- NULL
 
   if(!(state.num %in% unique(data$STATE)))
     stop("invalid STATE number: ", state.num)

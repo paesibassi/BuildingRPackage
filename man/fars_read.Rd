@@ -18,7 +18,7 @@ Reads a csv file and import the data, returning a tibble.
 }
 \details{
 The data type in the columns is guessed automatically by the
-  \code{\link[readr]{read_csv}} function in the \code{\link{readr}} package.
+  \code{\link[readr]{read_csv}} function in the \pkg{readr} package.
   Additional messages and progress are supressed to limit the console
   output.
 
@@ -26,7 +26,7 @@ The data type in the columns is guessed automatically by the
   an error.
 }
 \examples{
-data2013 <- fars_read('fars_data/accident_2013.csv.bz2')
-data2014 <- fars_read('fars_data/accident_2014.csv.bz2')
+\donttest{data2013 <- fars_read('fars_data/accident_2013.csv.bz2')}
+\donttest{data2014 <- fars_read('fars_data/accident_2014.csv.bz2')}
 
 }

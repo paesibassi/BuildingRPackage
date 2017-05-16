@@ -26,8 +26,8 @@ The data files must be in the current working directory (see also
   \code{\link{getwd}}) to be found.
 }
 \examples{
-aggregated <- fars_summarize_years(2013)
-aggregated <- fars_summarize_years(c(2013, 2014, 2015))
+\donttest{aggregated <- fars_summarize_years(2013)}
+\donttest{aggregated <- fars_summarize_years(c(2013, 2014, 2015))}
 
 }
 \seealso{
