@@ -93,7 +93,6 @@ make_filename <- function(year) {
 #' year_list <- fars_read_years(2013)
 #' year_list <- fars_read_years(c(2013, 2014, 2015))
 #'
-#' @importFrom magrittr %>%
 #' @import dplyr
 #'
 #' @export
@@ -135,7 +134,6 @@ fars_read_years <- function(years) {
 #' aggregated <- fars_summarize_years(2013)
 #' aggregated <- fars_summarize_years(c(2013, 2014, 2015))
 #'
-#' @importFrom magrittr %>%
 #' @import dplyr
 #' @import tidyr
 #'
