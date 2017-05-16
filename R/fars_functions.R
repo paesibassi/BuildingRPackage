@@ -84,6 +84,8 @@ make_filename <- function(year) {
 #'   operator.
 #'
 #' @param years a vector of years, as integers.
+#' @param internal logical, if the function is run using data from the package,
+#'   defaults to FALSE
 #'
 #' @return A list of tibbles (see \code{\link{tibble}})).
 #'
@@ -96,9 +98,14 @@ make_filename <- function(year) {
 #' @import dplyr
 #'
 #' @export
-fars_read_years <- function(years) {
+fars_read_years <- function(years, internal = FALSE) {
   lapply(years, function(year) {
-    file <- make_filename(year)
+    # added if statement to make the code run with internal package data
+    if (internal) {
+      file <- system.file("extdata", make_filename(year), package = "buildRpackage")
+    } else {
+      file <- make_filename(year)
+    }
     tryCatch({
       dat <- fars_read(file)
       # changed to standard evaluation to pass R CMD Check
@@ -139,8 +146,8 @@ fars_read_years <- function(years) {
 #' @import tidyr
 #'
 #' @export
-fars_summarize_years <- function(years) {
-  dat_list <- fars_read_years(years)
+fars_summarize_years <- function(years, internal = FALSE) {
+  dat_list <- fars_read_years(years, internal = internal)
   # changed to standard evaluation to pass R CMD Check
   dplyr::bind_rows(dat_list) %>%
     dplyr::group_by_("year", "MONTH") %>%
@@ -174,6 +181,8 @@ fars_summarize_years <- function(years) {
 #'
 #' @param state.num a State number, an integer between 1 and 56.
 #' @param year a year, as integer.
+#' @param internal logical, if the function is run using data from the package,
+#'   defaults to FALSE
 #'
 #' @return \code{NULL (empty)} returned invisibly \code{\link{invisible}}.
 #'   As side effect, the function will plot a State map with the observations
@@ -188,8 +197,12 @@ fars_summarize_years <- function(years) {
 #' @import graphics
 #'
 #' @export
-fars_map_state <- function(state.num, year) {
-  filename <- make_filename(year)
+fars_map_state <- function(state.num, year, internal = FALSE) {
+  if (internal) {
+    filename <- system.file("extdata", make_filename(year), package = "buildRpackage")
+  } else {
+    filename <- make_filename(year)
+  }
   data <- fars_read(filename)
   state.num <- as.integer(state.num)
 
