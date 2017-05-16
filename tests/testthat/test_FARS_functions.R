@@ -1,5 +1,5 @@
 test_that("Fars function tests", {
 
-  expect_false(1 == 0)
-  expect_equal(1, 1)
+  expect_equal(make_filename(2013), "accident_2013.csv.bz2")
+
 })
