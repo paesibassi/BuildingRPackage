@@ -5,6 +5,8 @@ This package has been built to complete the assignment for the Coursera R Packag
 
 It contains some functions that extract data from csv files, aggregate and show observations and plot them on a map.
 
+Travis shield: [![Travis-CI Build Status](https://travis-ci.org/paesibassi/BuildingRPackage.svg?branch=master)](https://travis-ci.org/paesibassi/BuildingRPackage)
+
 ### Instructions
 
 The purpose of this assessment is for you to combine your skills of creating, writing, documenting, and testing an R package with releasing that package on GitHub. In this assessment you'll be taking the R files from Week 2's assessment about documentation and putting that file in an R package.
