@@ -1,0 +1,16 @@
+Package: buildRpackage
+Title: Build R package assignment, FARS functions
+Version: 1.0.0
+Authors@R: person("Federico",
+  "Calore",
+  email = "fedecalo@gmail.com",
+  role = c("aut", "cre"))
+Description: This package has been built to complete the assignment
+  for the Coursera R Packages course.
+  It contains some functions that extract data from csv files,
+  aggregate and show observations and plot them on a map.
+Depends: R (>= 3.3.2)
+License: CC0 (Creative Commons Public Domain)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
