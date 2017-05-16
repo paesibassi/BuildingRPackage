@@ -9,7 +9,11 @@ Description: This package has been built to complete the assignment
   for the Coursera R Packages course.
   It contains some functions that extract data from csv files,
   aggregate and show observations and plot them on a map.
-Depends: R (>= 3.3.2)
+Depends: R (>= 3.3.2),
+  dplyr,
+  maps,
+  readr,
+  tidyr
 License: CC0 (Creative Commons Public Domain)
 Encoding: UTF-8
 LazyData: true
