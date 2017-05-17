@@ -4,10 +4,13 @@
 \alias{fars_read_years}
 \title{Reads a vector of files and returns months and years}
 \usage{
-fars_read_years(years)
+fars_read_years(years, internal = FALSE)
 }
 \arguments{
 \item{years}{a vector of years, as integers.}
+
+\item{internal}{logical, if the function is run using data from the package,
+defaults to FALSE}
 }
 \value{
 A list of tibbles (see \code{\link{tibble}})).

@@ -11,130 +11,48 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-NOTE: using the tag @import in the roxygen3 tags adds a package import to the
-package NAMESPACE, making their functions available inside the built package.
-This works in most cases, but I could not make it work for the maps package,
-that does not export the data necessary for the maps::map() function.
+This package provides some convenient functions to extract, aggregate and
+visualise data from FARS - *Fatality Analysis Reporting System*.
+More information can be found
+[at this link](https://www.nhtsa.gov/research-data/fatality-analysis-reporting-system-fars).
 
-I also included a Warning in the function documentation, in case the function
-is not loaded as part of a package.
+```{r, include=FALSE}
+library(buildRpackage)
+datafile <- system.file("extdata", "accident_2013.csv.bz2", package = "buildRpackage")
+```
 
-Reads a data file and returns a tibble
-Reads a csv file and import the data, returning a tibble.
-@details The data type in the columns is guessed automatically by the
-  \code{\link[readr]{read_csv}} function in the \code{\link{readr}} package.
-  Additional messages and progress are supressed to limit the console
-  output.
-  If the file is not found at the specified path, the function throws
-  an error.
-@param filename path to a csv data file, as a character string.
-@return A tibble, enhanced implementation of data.frame
-  (see \code{\link{tibble}}).
-@examples
-data2013 <- fars_read('fars_data/accident_2013.csv.bz2')
-data2014 <- fars_read('fars_data/accident_2014.csv.bz2')
+## Low level data functions
 
+The package includes some basic low-level functions to build a properly
+formatted filename and read a csv file.
+The data looks like the following:
 
-Builds a filename as character string
+```{r}
+tabl <- fars_read(datafile)
+tabl
+```
 
-@description Inserts a year number into a base string, in order to build a
-  filename.
+## Data aggregations functions
 
-@details The resulting string can be passed to other functions to process
-  the target data file. It is a convenience function to process many files
-  that differ only in the year number.
+Some convenient higher level functions are also available. These take as argument
+a vector of integers to determine the years. If a corresponding year is found in
+the data, the observations are aggregated by month and by year, and visualised
+as a contigency table, with Months in rows and Years in columns, as the following:
 
-@param year a year number, as integer.
+```{r}
+aggregated <- fars_summarize_years(c(2013, 2014, 2015), internal = TRUE)
+aggregated
+```
 
-@return A filename as a character string.
+## Plot functions
 
-@seealso (\code{\link{fars_read}})
+Finally, a plot function is also available. It takes two integer arguments, one
+for a USA State number and a second for the year.
+The resulting observations are then plotted on the selected State map, using the
+longitude and latitude information from the data file.
+Here's a couple of examples:
 
-@examples
-print(make_filename(2013))
-filename <- make_filename(2014)
-
-
-
-Reads a vector of files and returns months and years
-
-The function reads a list of csv data files, specified by year, and returns
-  a list of tibbles \code{\link{tibble}} with two columns: month number and
-  year combinations.
-
-@details If any of the years leads to an inexistent file, the function
-  throws a warning for each.
-
-@note
-The data files must be in the current working directory (see also
-  \code{\link{getwd}}) to be found.
-
-@section Warning:
-  \code{\link{dplyr}} package should be attached (\code{library(dplyr)}),
-  or the function will throw an error because it cannot find the pipe
-  operator.
-
-@param years a vector of years, as integers.
-
-@return A list of tibbles (see \code{\link{tibble}})).
-
-@seealso (\code{\link{make_filename}})
-
-@examples
-year_list <- fars_read_years(2013)
-year_list <- fars_read_years(c(2013, 2014, 2015))
-
-Reads a vector of files and returns total observations by month and year
-
-The function takes a vector of year numbers, reads the corresponding files
-  (using \code{\link{fars_read_years}}) and counts the number of rows in
-  each, aggregated by month number.
-  Then it builds a single table with one row per month number, and a column
-  for each file / year, where the values represent the total number of
-  observations.
-
-@note
-The data files must be in the current working directory (see also
-  \code{\link{getwd}}) to be found.
-
-@param years a vector of years, as integers.
-
-@return A tibble, enhanced implementation of data.frame
-  (see \code{\link{tibble}}), with 12 rows and 1 column for each year.
-
-@seealso (\code{\link{fars_read_years}})
-
-@examples
-aggregated <- fars_summarize_years(2013)
-aggregated <- fars_summarize_years(c(2013, 2014, 2015))
-
-Draws observations as point on a map
-
-\code{fars_map_state} takes a State number and a year as arguments.
-  Reads the datafile for the corresponding year, and draws a map of the
-  State with points at the longitude and latitude of the observations /
-  accidents in the dataset.
-
-@details
-If the value for the \code{state.num} parameter does not correspond to a
-  valid State in the dataset, the function will throw an error.
-  If the State and year combination has zero observations, a message is
-  printed.
-  All the points outside of Longitude > 900 or Latitude > 90 are nullified and
-  not drawn on the map.
-@note
-The data files must be in the current working directory (see also
-  \code{\link{getwd}}) to be found.
-
-@section Warning:
-  \code{\link{maps}} package should be attached (\code{library(maps)}),
-  or the function will throw an error because maps does not export the data
-  (\code{object 'stateMapEnv'}) for the \code{\link{map}} function.
-@param state.num a State number, an integer between 1 and 56.
-@param year a year, as integer.
-@return \code{NULL (empty)} returned invisibly \code{\link{invisible}}.
-  As side effect, the function will plot a State map with the observations
-  (accidents) plotted as points on the map.
-@examples
-fars_map_state(1, 2013)
-fars_map_state(48, 2015)
+```{r, fig.width=3, fig.height=3, ig.align='center', fig.show='hold'}
+fars_map_state(1, 2013, internal = TRUE)
+fars_map_state(48, 2015, internal = TRUE)
+```

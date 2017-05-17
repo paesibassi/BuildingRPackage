@@ -4,10 +4,13 @@
 \alias{fars_summarize_years}
 \title{Reads a vector of files and returns total observations by month and year}
 \usage{
-fars_summarize_years(years)
+fars_summarize_years(years, internal = FALSE)
 }
 \arguments{
 \item{years}{a vector of years, as integers.}
+
+\item{internal}{logical, if the function is run using data from the package,
+defaults to FALSE}
 }
 \value{
 A tibble, enhanced implementation of data.frame

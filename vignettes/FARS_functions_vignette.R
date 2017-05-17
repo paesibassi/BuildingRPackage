@@ -1,7 +1,16 @@
-## ---- fig.show='hold'----------------------------------------------------
-plot(1:10)
-plot(10:1)
+## ---- include=FALSE------------------------------------------------------
+library(buildRpackage)
+datafile <- system.file("extdata", "accident_2013.csv.bz2", package = "buildRpackage")
 
-## ---- echo=FALSE, results='asis'-----------------------------------------
-knitr::kable(head(mtcars, 10))
+## ------------------------------------------------------------------------
+tabl <- fars_read(datafile)
+tabl
+
+## ------------------------------------------------------------------------
+aggregated <- fars_summarize_years(c(2013, 2014, 2015), internal = TRUE)
+aggregated
+
+## ---- fig.width=3, fig.height=3, ig.align='center', fig.show='hold'------
+fars_map_state(1, 2013, internal = TRUE)
+fars_map_state(48, 2015, internal = TRUE)
 

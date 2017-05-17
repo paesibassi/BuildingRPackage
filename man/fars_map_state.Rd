@@ -4,12 +4,15 @@
 \alias{fars_map_state}
 \title{Draws observations as point on a map}
 \usage{
-fars_map_state(state.num, year)
+fars_map_state(state.num, year, internal = FALSE)
 }
 \arguments{
 \item{state.num}{a State number, an integer between 1 and 56.}
 
 \item{year}{a year, as integer.}
+
+\item{internal}{logical, if the function is run using data from the package,
+defaults to FALSE}
 }
 \value{
 \code{NULL (empty)} returned invisibly \code{\link{invisible}}.
