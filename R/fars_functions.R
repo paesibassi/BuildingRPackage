@@ -132,6 +132,8 @@ fars_read_years <- function(years, internal = FALSE) {
 #'   \code{\link{getwd}}) to be found.
 #'
 #' @param years a vector of years, as integers.
+#' @param internal logical, if the function is run using data from the package,
+#'   defaults to FALSE
 #'
 #' @return A tibble, enhanced implementation of data.frame
 #'   (see \code{\link{tibble}}), with 12 rows and 1 column for each year.
